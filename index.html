@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine 💖</title>
+
+  <!-- Confetti library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .container {
+      background: white;
+      padding: 22px;
+      border-radius: 22px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 92%;
+      width: 360px;
+    }
+
+    /* Animated Name */
+    .name {
+      font-size: 30px;
+      font-weight: bold;
+      color: #ff4d6d;
+      margin-bottom: 10px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    h1 {
+      color: #ff4d6d;
+      margin-bottom: 15px;
+    }
+
+    img {
+      width: 100%;
+      max-width: 240px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      font-size: 18px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #yesBtn {
+      background-color: #ff4d6d;
+      color: white;
+    }
+
+    #noBtn {
+      background-color: #ccc;
+      color: #333;
+    }
+
+    #message {
+      margin-top: 20px;
+      font-size: 20px;
+      color: #ff4d6d;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <!-- HER NAME -->
+    <div class="name">Kenesha 💖</div>
+
+    <h1>Will you be my Valentine?</h1>
+
+    <!-- LOCAL GIF -->
+    <img src="minion-heart.gif" alt="Minion pulling out a heart" />
+
+    <div class="buttons">
+      <button id="yesBtn" onclick="yesClicked()">Yes 💕</button>
+      <button id="noBtn" onclick="noClicked()">No 🙃</button>
+    </div>
+
+    <div id="message"></div>
+  </div>
+
+  <!-- Love Song -->
+  <audio id="loveSong">
+    <source
+      src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_4c6b7d7c2a.mp3?filename=romantic-love-112199.mp3"
+      type="audio/mpeg"
+    />
+  </audio>
+
+  <script>
+    let yesSize = 18;
+    let noTexts = [
+      "Are you sure?",
+      "Think again!!",
+      "Really really sure?",
+      "You might regret this 😏",
+      "Last chance!!!",
+      "Okay… now you’re just playing 😭"
+    ];
+    let noClickCount = 0;
+
+    function yesClicked() {
+      document.getElementById("message").innerText =
+        "YAY!!! 💕 I can’t wait to be your Valentine 😍";
+
+      // Play song
+      const song = document.getElementById("loveSong");
+      song.volume = 0.7;
+      song.play();
+
+      // Heart confetti burst
+      confetti({
+        particleCount: 120,
+        spread: 70,
+        origin: { y: 0.6 },
+        shapes: ["heart"],
+        colors: ["#ff4d6d", "#ff758f", "#ffb3c6"]
+      });
+
+      // Heart rain
+      let end = Date.now() + 3500;
+
+      (function frame() {
+        confetti({
+          particleCount: 4,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          shapes: ["heart"],
+          colors: ["#ff4d6d", "#ff758f", "#ffb3c6"]
+        });
+        confetti({
+          particleCount: 4,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          shapes: ["heart"],
+          colors: ["#ff4d6d", "#ff758f", "#ffb3c6"]
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+    function noClicked() {
+      yesSize += 6;
+      let yesBtn = document.getElementById("yesBtn");
+      yesBtn.style.fontSize = yesSize + "px";
+      yesBtn.style.padding =
+        12 + noClickCount * 2 + "px " + (20 + noClickCount * 4) + "px";
+
+      let noBtn = document.getElementById("noBtn");
+      if (noClickCount < noTexts.length) {
+        noBtn.innerText = noTexts[noClickCount];
+      } else {
+        noBtn.innerText = "Just say YES 😘";
+      }
+
+      noClickCount++;
+    }
+  </script>
+</body>
+</html>
